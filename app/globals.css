@@ -1,26 +1,162 @@
 @import "tailwindcss";
 
+/* ── Design tokens ────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg:          #050507;
+  --bg-2:        #08080f;
+  --surface:     #0d0d16;
+  --surface-2:   #13131e;
+  --border:      rgba(255,255,255,0.055);
+  --text:        #f0f0f5;
+  --muted:       #6a6a7a;
+  --green:       #00e87a;
+  --green-dim:   rgba(0,232,122,0.08);
+  --violet:      #7c3aed;
+  --blue:        #3b82f6;
+  --radius:      16px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Base reset ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body { background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* ── Font helpers ─────────────────────────────────────────── */
+.font-syne { font-family: var(--font-syne, "Syne", sans-serif); }
+.font-dm   { font-family: var(--font-dm, "DM Sans", sans-serif); }
+.font-700  { font-weight: 700; }
+.font-800  { font-weight: 800; }
+
+/* ── Glassmorphism ────────────────────────────────────────── */
+.glass {
+  background: rgba(255,255,255,0.028);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.055);
+}
+.glass-strong {
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.07);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Mesh gradient ────────────────────────────────────────── */
+.mesh-gradient {
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 90% 60% at 15% 120%, rgba(0,232,122,0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 50% at 85% -5%,  rgba(124,58,237,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 50% 50%,  rgba(59,130,246,0.04) 0%, transparent 60%);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Dot grid ─────────────────────────────────────────────── */
+.bg-grid {
+  background-image: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
+
+/* ── Scan-line shimmer ────────────────────────────────────── */
+.scan-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.012) 50%, transparent 100%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* ── Gradient text ────────────────────────────────────────── */
+.gradient-green {
+  background: linear-gradient(135deg, #00e87a 0%, #00d4ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gradient-fire {
+  background: linear-gradient(120deg, #ff5757 0%, #ffa94d 60%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gradient-violet {
+  background: linear-gradient(135deg, #a78bfa 0%, #6366f1 50%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Glow panel shadow ────────────────────────────────────── */
+.glow-panel {
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.06) inset,
+    0 -1px 0 rgba(0,0,0,0.4) inset,
+    0 24px 80px rgba(0,0,0,0.55),
+    0 0 60px rgba(0,232,122,0.06);
+}
+
+/* ── Depth card ───────────────────────────────────────────── */
+.depth-card {
+  background: linear-gradient(145deg, rgba(255,255,255,0.048) 0%, rgba(255,255,255,0.016) 100%);
+  border: 1px solid rgba(255,255,255,0.065);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 40px 120px rgba(0,0,0,0.55);
+}
+
+/* ── Bento card ───────────────────────────────────────────── */
+.bento-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.038) 0%, rgba(255,255,255,0.014) 100%);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+.bento-card:hover {
+  border-color: rgba(255,255,255,0.11);
+  box-shadow: 0 20px 80px rgba(0,0,0,0.4);
+}
+
+/* ── Separator line ───────────────────────────────────────── */
+.separator {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.07) 40%, rgba(255,255,255,0.07) 60%, transparent);
+}
+
+/* ── Ticker / marquee ─────────────────────────────────────── */
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.animate-ticker { animation: ticker 32s linear infinite; }
+
+/* ── Glow pulse ───────────────────────────────────────────── */
+@keyframes glow-pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+.animate-glow { animation: glow-pulse 2.2s ease-in-out infinite; }
+
+/* ── Float ────────────────────────────────────────────────── */
+@keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-10px); } }
+.animate-float { animation: float 6s ease-in-out infinite; }
+
+/* ── Shimmer sweep ────────────────────────────────────────── */
+@keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
+.shimmer-sweep {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.05) 50%, transparent 100%);
+  animation: shimmer 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ── Orbit ────────────────────────────────────────────────── */
+@keyframes orbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.animate-orbit-slow { animation: orbit 22s linear infinite; }
+.animate-orbit-mid  { animation: orbit 14s linear infinite reverse; }
+
+/* ── Aurora background pulse ──────────────────────────────── */
+@keyframes aurora { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+.animate-aurora { animation: aurora 8s ease-in-out infinite; }
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #1a1a28; border-radius: 3px; }
+
+/* ── Selection ────────────────────────────────────────────── */
+::selection { background: rgba(0,232,122,0.22); color: #fff; }
