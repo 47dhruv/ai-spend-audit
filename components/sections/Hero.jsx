@@ -41,30 +41,36 @@ function ToolCard({ tool, index }) {
   const isHigh = tool.waste > 60;
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.75, y: 10 }}
+      initial={{ opacity: 0, scale: 0.7, y: 16 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
-      transition={{ delay: 0.9 + tool.delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ delay: 0.8 + tool.delay, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       style={tool.position}
       className="absolute z-20"
     >
       <motion.div
-        animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 5 + index * 1.2, ease: "easeInOut", repeat: Infinity }}
-        className="glass rounded-xl px-3 py-2.5 flex items-center gap-2.5 cursor-default"
-        style={{ borderColor: `${tool.color}28`, boxShadow: `0 0 20px ${tool.color}10` }}
+        animate={{ y: [0, -7, 0] }}
+        transition={{ duration: 5 + index * 1.3, ease: "easeInOut", repeat: Infinity }}
+        className="relative rounded-2xl px-3.5 py-2.5 flex items-center gap-2.5 cursor-default"
+        style={{
+          background: `linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%)`,
+          backdropFilter: "blur(20px) saturate(180%)",
+          WebkitBackdropFilter: "blur(20px) saturate(180%)",
+          border: `1px solid ${tool.color}35`,
+          boxShadow: `0 0 0 1px rgba(0,0,0,0.3), 0 8px 32px rgba(0,0,0,0.4), 0 0 20px ${tool.color}18`,
+        }}
       >
         <span className="text-base leading-none">{tool.logo}</span>
         <div className="min-w-0">
           <p className="text-[11px] font-syne font-700 text-white leading-none mb-1">{tool.name}</p>
           <div className="flex items-center gap-1.5">
-            <span className="text-[10px] font-mono text-[#6a6a7a]">${tool.monthly}/mo</span>
-            <span className={`text-[9px] font-mono px-1 rounded ${isHigh ? "bg-red-500/15 text-red-400" : "bg-amber-500/15 text-amber-400"}`}>
+            <span className="text-[10px] font-mono text-[#5a5a6a]">${tool.monthly}/mo</span>
+            <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded-full ${isHigh ? "bg-red-500/15 text-red-400 border border-red-500/20" : "bg-amber-500/12 text-amber-400 border border-amber-500/20"}`}>
               {tool.waste}% waste
             </span>
           </div>
         </div>
         <motion.div
-          animate={{ scale: [1, 1.4, 1] }}
+          animate={{ scale: [1, 1.5, 1], opacity: [0.8, 1, 0.8] }}
           transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
           className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${isHigh ? "bg-red-400" : "bg-amber-400"}`}
         />
@@ -75,29 +81,29 @@ function ToolCard({ tool, index }) {
 
 function DashboardMockup() {
   const [animate, setAnimate] = useState(false);
-  useEffect(() => { const t = setTimeout(() => setAnimate(true), 600); return () => clearTimeout(t); }, []);
+  useEffect(() => { const t = setTimeout(() => setAnimate(true), 500); return () => clearTimeout(t); }, []);
   const total = SPEND_BARS.reduce((a, b) => a + b.amount, 0);
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40, rotateX: 10 }}
-      animate={{ opacity: 1, y: 0, rotateX: 0 }}
-      transition={{ duration: 1, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-      style={{ transformPerspective: 1400 }}
-      className="relative w-full max-w-[580px] mx-auto"
+      initial={{ opacity: 0, y: 48, rotateX: 14, rotateY: -2 }}
+      animate={{ opacity: 1, y: 0, rotateX: 0, rotateY: 0 }}
+      transition={{ duration: 1.1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      style={{ transformPerspective: 1600 }}
+      className="relative w-full max-w-[600px] mx-auto"
     >
-      {/* Multi-layer glow */}
-      <div className="absolute -inset-6 bg-[#00e87a]/[0.06] rounded-3xl blur-[60px] animate-aurora" />
-      <div className="absolute -inset-2 bg-gradient-to-br from-[#00e87a]/10 via-transparent to-[#7c3aed]/08 rounded-2xl blur-md" />
-
-      {/* Orbital rings */}
+      {/* Halo rings */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="w-[110%] h-[110%] rounded-full border border-[#00e87a]/[0.04] animate-orbit-slow absolute" />
-        <div className="w-[130%] h-[130%] rounded-full border border-[#7c3aed]/[0.03] animate-orbit-mid absolute" />
+        <div className="halo-ring" style={{ width: "108%", height: "108%" }} />
+        <div className="halo-ring" style={{ width: "126%", height: "126%", animationDelay: "2s", borderColor: "rgba(124,58,237,0.15)" }} />
       </div>
 
+      {/* Multi-layer glow */}
+      <div className="absolute -inset-8 bg-[#00e87a]/[0.07] rounded-3xl blur-[80px] animate-aurora" />
+      <div className="absolute -inset-3 bg-gradient-to-br from-[#00e87a]/12 via-transparent to-[#7c3aed]/10 rounded-2xl blur-lg" />
+
       {/* Card */}
-      <div className="relative depth-card rounded-2xl overflow-hidden scan-line">
+      <div className="relative depth-card-xl noise-overlay rounded-2xl overflow-hidden">
         {/* Header */}
         <div className="flex items-center gap-2 px-5 py-3.5 border-b border-white/[0.05] bg-white/[0.01]">
           <div className="flex gap-1.5">
@@ -219,68 +225,81 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[100svh] flex items-center overflow-hidden mesh-gradient bg-grid pt-24 pb-16 lg:pb-28"
+      className="relative min-h-[100svh] flex items-center overflow-hidden mesh-gradient hero-grid noise-overlay pt-24 pb-16 lg:pb-28"
     >
-      {/* ── Background layers ─── */}
+      {/* ── Cinematic background layers ─── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Primary green glow — bottom left */}
-        <div className="absolute -bottom-40 -left-40 w-[700px] h-[700px] rounded-full bg-[#00e87a]/[0.06] blur-[130px] animate-aurora" />
+        {/* Beam sweep */}
+        <div className="beam-sweep" />
+        {/* Diagonal stripe texture */}
+        <div className="absolute inset-0 diagonal-lines opacity-60" />
+        {/* Primary green halo — bottom left, larger & brighter */}
+        <div className="absolute -bottom-60 -left-60 w-[900px] h-[900px] rounded-full bg-[#00e87a]/[0.07] blur-[160px] animate-aurora" />
+        {/* Secondary green orb — mid right */}
+        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] rounded-full bg-[#00e87a]/[0.04] blur-[120px] animate-aurora" style={{ animationDelay: "3s" }} />
         {/* Violet glow — top right */}
-        <div className="absolute -top-32 right-1/4 w-[500px] h-[500px] rounded-full bg-[#7c3aed]/[0.06] blur-[110px]" />
-        {/* Blue accent — centre */}
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[400px] h-[200px] rounded-full bg-[#3b82f6]/[0.03] blur-[80px]" />
-        {/* Vignette */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_120%,transparent_40%,#050507_80%)]" />
-        {/* Diagonal accent line */}
-        <div className="absolute top-0 right-0 w-px h-full bg-gradient-to-b from-transparent via-[#7c3aed]/20 to-transparent opacity-40" style={{ right: "38%" }} />
+        <div className="absolute -top-40 right-1/3 w-[600px] h-[600px] rounded-full bg-[#7c3aed]/[0.07] blur-[130px]" />
+        {/* Deep blue — center */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full bg-[#3b82f6]/[0.04] blur-[100px]" />
+        {/* Vertical separator line (right of copy) */}
+        <div className="absolute top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-[#7c3aed]/25 to-transparent hidden lg:block" style={{ left: "44%" }} />
+        {/* Bottom vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_130%,transparent_30%,#050507_75%)]" />
+        {/* Top vignette */}
+        <div className="absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-[#050507] to-transparent" />
       </div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 xl:px-8">
         {/* Asymmetric grid: copy is narrower, visual takes more space */}
-        <div className="grid lg:grid-cols-[5fr_7fr] gap-10 xl:gap-16 items-center">
+        <div className="grid lg:grid-cols-[44fr_56fr] gap-8 xl:gap-14 items-center">
 
           {/* ── LEFT: Copy ── */}
           <motion.div variants={stagger} initial="hidden" animate="show" className="flex flex-col gap-6 lg:gap-7 lg:pr-4">
 
             {/* Eyebrow */}
-            <motion.div variants={item} className="flex items-center gap-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass border border-[#00e87a]/25 text-[#00e87a]"
-                style={{ boxShadow: "0 0 20px rgba(0,232,122,0.08)" }}>
-                <motion.div animate={{ scale: [1, 1.5, 1] }} transition={{ duration: 1.6, repeat: Infinity }}
-                  className="w-1.5 h-1.5 rounded-full bg-[#00e87a]" />
-                <span className="text-[11px] font-mono tracking-widest uppercase">Beta · 2,400+ audits run</span>
+            <motion.div variants={item} className="flex items-center gap-3 flex-wrap">
+              <div className="eyebrow-badge inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full text-[#00e87a]">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="live-ping relative inline-flex rounded-full h-1.5 w-1.5 bg-[#00e87a]" />
+                </span>
+                <span className="text-[11px] font-mono tracking-[0.14em] uppercase">Beta · 2,400+ audits run</span>
               </div>
-              <div className="hidden sm:flex items-center gap-0.5">
+              <div className="flex items-center gap-0.5">
                 {[...Array(5)].map((_, i) => <Star key={i} size={11} fill="#f59e0b" className="text-amber-400" />)}
+                <span className="text-[10px] font-dm text-[#555] ml-1.5">4.9/5</span>
               </div>
             </motion.div>
 
-            {/* Headline — large, weighted, asymmetric line breaks */}
+            {/* Headline */}
             <motion.div variants={item}>
-              <h1 className="font-syne font-800 leading-[1.04] tracking-[-0.035em] text-[clamp(2.6rem,5vw,4.2rem)] text-balance">
-                <span className="block text-white/90">Stop burning</span>
-                <GradientText variant="custom" from="#ff5757" to="#f59e0b" angle={120} className="font-syne font-800 block" as="span">
-                  $4,200/mo
-                </GradientText>
-                <span className="block text-white/80">on AI you&apos;re not</span>
-                <span className="block text-white/60">using.</span>
+              <h1 className="font-syne font-800 leading-[1.02] tracking-[-0.04em] text-[clamp(3rem,5.5vw,4.8rem)]">
+                <span className="block text-white">Stop burning</span>
+                <span className="block relative">
+                  <GradientText variant="custom" from="#ff4444" to="#f59e0b" angle={115} className="font-syne font-800" as="span">
+                    $4,200/mo
+                  </GradientText>
+                  {/* underline glow accent */}
+                  <span className="absolute -bottom-1 left-0 w-3/4 h-px bg-gradient-to-r from-[#ff4444]/60 via-[#f59e0b]/40 to-transparent" />
+                </span>
+                <span className="block text-white/70 mt-1">on AI tools you</span>
+                <span className="block text-white/40">don&apos;t use.</span>
               </h1>
             </motion.div>
 
             {/* Sub-copy */}
-            <motion.p variants={item} className="text-base sm:text-[1.05rem] text-[#6a6a7a] font-dm leading-relaxed max-w-[440px]">
+            <motion.p variants={item} className="text-[1rem] sm:text-[1.05rem] text-[#585868] font-dm leading-[1.7] max-w-[420px]">
               SpendLens scans your entire AI stack in{" "}
-              <span className="text-[#c8c8d8] font-medium">60 seconds</span>, identifies wasted subscriptions, duplicate tools and unused API credits — then tells you{" "}
-              <span className="text-[#c8c8d8] font-medium">exactly what to cut</span>.
+              <span className="text-[#d4d4e8] font-medium">60 seconds</span>, surfaces wasted subscriptions, duplicate tools and idle API credits — then tells you{" "}
+              <span className="text-[#d4d4e8] font-medium">exactly what to cut</span>.
             </motion.p>
 
             {/* CTAs */}
             <motion.div variants={item} className="flex flex-wrap gap-3">
               <Link href="/audit">
                 <motion.button
-                  whileHover={{ scale: 1.025, boxShadow: "0 0 40px rgba(0,232,122,0.3), 0 0 80px rgba(0,232,122,0.12)" }}
+                  whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.97 }}
-                  className="group relative flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#00e87a] text-[#050507] font-syne font-700 text-sm overflow-hidden transition-colors hover:bg-[#00ff87]"
+                  className="btn-primary-glow group relative flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-[#00e87a] text-[#050507] font-syne font-700 text-sm overflow-hidden transition-all hover:bg-[#05f080]"
                 >
                   <div className="shimmer-sweep" />
                   <Zap size={15} fill="currentColor" />
@@ -290,9 +309,9 @@ export default function Hero() {
               </Link>
               <Link href="#demo">
                 <motion.button
-                  whileHover={{ scale: 1.01, borderColor: "rgba(255,255,255,0.18)" }}
+                  whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.97 }}
-                  className="group flex items-center gap-2 px-6 py-3.5 rounded-xl glass border border-white/[0.08] text-[#8a8a9a] hover:text-white text-sm font-dm transition-colors duration-200"
+                  className="group flex items-center gap-2.5 px-6 py-3.5 rounded-xl border border-white/[0.09] bg-white/[0.03] text-[#7a7a8a] hover:text-white hover:border-white/[0.16] hover:bg-white/[0.06] text-sm font-dm transition-all duration-200"
                 >
                   <BarChart3 size={14} />
                   See Sample Report
@@ -353,16 +372,20 @@ export default function Hero() {
         </div>
 
         {/* ── Tool ticker ── */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6, duration: 0.7 }} className="mt-16 lg:mt-24">
-          <p className="text-center text-[10px] font-mono text-[#3a3a4a] uppercase tracking-[0.2em] mb-5">Audits spend across every major AI tool</p>
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6, duration: 0.8 }} className="mt-16 lg:mt-24">
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <div className="h-px w-12 bg-gradient-to-r from-transparent to-white/10" />
+            <p className="text-center text-[10px] font-mono text-[#333] uppercase tracking-[0.22em]">Audits AI spend across every major tool</p>
+            <div className="h-px w-12 bg-gradient-to-l from-transparent to-white/10" />
+          </div>
           <div className="relative overflow-hidden">
-            <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#050507] to-transparent z-10" />
-            <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#050507] to-transparent z-10" />
-            <div className="flex gap-3 overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#050507] to-transparent z-10" />
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#050507] to-transparent z-10" />
+            <div className="flex gap-2.5 overflow-hidden">
               <motion.div
                 animate={{ x: ["0%", "-50%"] }}
-                transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
-                className="flex gap-3 flex-shrink-0"
+                transition={{ duration: 36, repeat: Infinity, ease: "linear" }}
+                className="flex gap-2.5 flex-shrink-0"
               >
                 {[
                   { name: "OpenAI", icon: "⚡", color: "#10a37f" }, { name: "Anthropic API", icon: "✦", color: "#d97706" },
@@ -379,10 +402,10 @@ export default function Hero() {
                   { name: "Eleven Labs", icon: "🎙️", color: "#06b6d4" }, { name: "Cohere", icon: "🧠", color: "#22c55e" },
                 ].map((tool, i) => (
                   <div key={`${tool.name}-${i}`}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-lg glass border border-white/[0.04] flex-shrink-0 hover:border-white/[0.09] transition-colors"
-                    style={{ boxShadow: `0 0 12px ${tool.color}08` }}>
-                    <span className="text-sm">{tool.icon}</span>
-                    <span className="text-xs font-dm text-[#5a5a6a] whitespace-nowrap">{tool.name}</span>
+                    className="ticker-pill flex items-center gap-2 px-4 py-2.5 rounded-xl flex-shrink-0"
+                    style={{ boxShadow: `0 0 16px ${tool.color}10` }}>
+                    <span className="text-sm leading-none">{tool.icon}</span>
+                    <span className="text-[11px] font-dm text-[#4a4a5a] whitespace-nowrap">{tool.name}</span>
                   </div>
                 ))}
               </motion.div>
