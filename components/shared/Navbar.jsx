@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { Zap, Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
@@ -91,14 +91,16 @@ export default function Navbar() {
         </div>
       </motion.header>
 
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          className="fixed inset-0 z-40 pt-16 bg-[#080808]/95 backdrop-blur-xl flex flex-col p-6 gap-6 md:hidden"
-        >
+      {/* Mobile drawer — AnimatePresence enables the exit animation */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-40 pt-16 bg-[#080808]/95 backdrop-blur-xl flex flex-col p-6 gap-6 md:hidden"
+          >
           {NAV_LINKS.map(({ label, href }) => (
             <Link
               key={label}
@@ -115,8 +117,9 @@ export default function Navbar() {
               Start Free Audit
             </button>
           </Link>
-        </motion.div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

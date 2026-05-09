@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import ToolSelector from "./ToolSelector";
 import SpendInput from "./SpendInput";
 import TeamSizeInput from "./TeamSizeInput";
+import { saveAuditData } from "@/lib/utils/storage";
+
 
 /* ── Constants ─────────────────────────────────────────────── */
 export const AI_TOOLS = {
@@ -378,15 +380,25 @@ export default function AuditForm() {
   }, []);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!auditData.teamSize || auditData.tools.length === 0) return;
-    setSubmitting(true);
-    // Store in sessionStorage for the results page to pick up
-    sessionStorage.setItem("auditData", JSON.stringify(auditData));
-    // Simulate brief processing delay for UX
-    await new Promise((r) => setTimeout(r, 800));
-    router.push("/results");
-  };
+  e.preventDefault();
+
+  if (!auditData.teamSize || auditData.tools.length === 0) return;
+
+  setSubmitting(true);
+
+  const result = saveAuditData(auditData);
+
+  if (!result.ok) {
+    console.error(result.error);
+    setSubmitting(false);
+    return;
+  }
+
+  // Small UX delay for premium feel
+  await new Promise((r) => setTimeout(r, 800));
+
+  router.push("/results");
+};
 
   const isValid = auditData.teamSize && auditData.tools.length > 0;
 

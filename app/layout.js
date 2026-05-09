@@ -1,23 +1,4 @@
-import { Syne, DM_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-
-const syne = Syne({
-  variable: "--font-syne",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const dmSans = DM_Sans({
-  variable: "--font-dm",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
-});
 
 export const metadata = {
   title: "SpendLens — AI Spend Audit for Startups",
@@ -35,9 +16,33 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${syne.variable} ${dmSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+      className="h-full antialiased"
     >
-      <body className="min-h-full flex flex-col bg-[#080808] text-white">
+      <head>
+        {/*
+          Load Google Fonts at runtime (browser-side) — no build-time network
+          request required. Works offline: system fonts are the graceful fallback.
+        */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
+        {/* CSS font variable definitions — fallback to system fonts if CDN unavailable */}
+        <style>{`
+          :root {
+            --font-syne: 'Syne', system-ui, sans-serif;
+            --font-dm:   'DM Sans', system-ui, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
+          }
+          body { font-family: var(--font-dm); }
+        `}</style>
+      </head>
+      <body className="min-h-full flex flex-col bg-[#050507] text-white">
         {children}
       </body>
     </html>
